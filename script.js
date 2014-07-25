@@ -1,3 +1,20 @@
+// Ball object     
+ball = {
+	x: 50,
+	y: 50, 
+	r: 5,
+	c: "white",
+	vx: 4,
+	vy: 8,
+	
+	// Function for drawing ball on canvas
+	draw: function() {
+		ctx.beginPath();
+		ctx.fillStyle = this.c;
+		ctx.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
+		ctx.fill();
+	}
+};
 //Do this when collides == true
 function collideAction(ball, p) {
 	ball.vy = -ball.vy;
