@@ -50,31 +50,31 @@ function collideAction(ball, p) {
 // Basically, the main game logic is defined here
 function update() {
 	
-	// Update scores
-	updateScore(); 
+// Update scores
+updateScore(); 
+
+// Move the paddles on mouse move
+
+
+if (mouseOrKeyboard == "mouse"){
+	if(mouse.x && mouse.y) {
+		for(var i = 1; i < paddles.length; i++) {
+			p = paddles[i];
+			p.x = mouse.x - p.w/2;
+		}		
+	}
+} else if (mouseOrKeyboard == "key") {
 	
-	// Move the paddles on mouse move
-
-
-	if (mouseOrKeyboard == "mouse"){
-		if(mouse.x && mouse.y) {
-			for(var i = 1; i < paddles.length; i++) {
-				p = paddles[i];
-				p.x = mouse.x - p.w/2;
-			}		
-		}
-	} else if (mouseOrKeyboard == "key") {
-		
-		if (37 in keysDown) { // Player holding left
-			for(var i = 1; i < paddles.length; i++) {
-				p = paddles[i];
-				p.x = p.x - 10;
-			}
-		}
-		if (39 in keysDown) { // Player holding right
-			for(var i = 1; i < paddles.length; i++) {
-				p = paddles[i];
-				p.x = p.x + 10;
-			}
+	if (37 in keysDown) { // Player holding left
+		for(var i = 1; i < paddles.length; i++) {
+			p = paddles[i];
+			p.x = p.x - 10;
 		}
 	}
+	if (39 in keysDown) { // Player holding right
+		for(var i = 1; i < paddles.length; i++) {
+			p = paddles[i];
+			p.x = p.x + 10;
+		}
+	}
+}
