@@ -53,7 +53,25 @@ mouseChoiceBtn = {
 		ctx.fillText("Mouse", W/2, H/2 );
 	}
 };
-
+// Restart Button object
+restartBtn = {
+	w: 100,
+	h: 50,
+	x: W/2 - 50,
+	y: H/2 - 50,
+	
+	draw: function() {
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = "2";
+		ctx.strokeRect(this.x, this.y, this.w, this.h);
+		
+		ctx.font = "18px Arial, sans-serif";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.fillStlye = "white";
+		ctx.fillText("Restart", W/2, H/2 - 25 );
+	}
+};
 // Function to update positions, score and everything.
 // Basically, the main game logic is defined here
 function update() {
