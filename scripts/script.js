@@ -72,6 +72,34 @@ restartBtn = {
 		ctx.fillText("Restart", W/2, H/2 - 25 );
 	}
 };
+// Function for creating particles object
+function createParticles(x, y, m) {
+	this.x = x || 0;
+	this.y = y || 0;
+	
+	this.radius = 3.2;
+	
+	this.vx = (Math.random()*1.5 + Math.random()*3);
+	this.vy = m * Math.random()*15.5;
+	
+
+}
+
+// Draw everything on canvas
+function draw() {
+	paintCanvas();
+	for(var i = 0; i < paddles.length; i++) {
+		p = paddles[i];
+		
+		ctx.fillStyle = "white";
+		ctx.fillRect(p.x, p.y, p.w, p.h);
+	}
+
+	
+	ball.draw();
+	update();
+}
+
 // Function to update positions, score and everything.
 // Basically, the main game logic is defined here
 function update() {
