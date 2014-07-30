@@ -21,8 +21,6 @@ window.cancelRequestAnimFrame = ( function() {
 		clearTimeout
 } )();
 
-
-
 // Initialize canvas and required variables
 var canvas = document.getElementById("canvas"),
 		ctx = canvas.getContext("2d"), // Create canvas context --!>
