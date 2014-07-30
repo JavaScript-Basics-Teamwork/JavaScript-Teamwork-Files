@@ -146,6 +146,90 @@ if (mouseOrKeyboard == "mouse"){
 		}
 	}
 }
+// Move the ball
+	ball.x += ball.vx;
+	ball.y += ball.vy;
+	
+	// Collision with paddles
+	p1 = paddles[1];
+	p2 = paddles[2];
+	
+	// If the ball strikes with paddles,
+	// invert the y-velocity vector of ball,
+	// increment the points, play the collision sound,
+	// save collision's position so that sparks can be
+	// emitted from that position, set the flag variable,
+	// and change the multiplier
+	if(collides(ball, p1)) {
+		collideAction(ball, p1);
+	}
+	
+	
+	else if(collides(ball, p2)) {
+		collideAction(ball, p2);
+	} 
+	
+	else {
+		// Collide with walls, If the ball hits the top/bottom,
+		// walls, run gameOver() function
+		if(ball.y + ball.r > H) {
+			ball.y = H - ball.r;
+			gameOver();
+		} 
+		
+		else if(ball.y < 0) {
+			ball.y = ball.r;
+			gameOver();
+		}
+		
+		// If ball strikes the vertical walls, invert the 
+		// x-velocity vector of ball
+		if(ball.x + ball.r > W) {
+			ball.vx = -ball.vx;
+			ball.x = W - ball.r;
+		}
+		
+		else if(ball.x -ball.r < 0) {
+			ball.vx = -ball.vx;
+			ball.x = ball.r;
+		}
+	}
+	
+	
+	
+	// If flag is set, push the particles
+	if(flag == 1) { 
+		for(var k = 0; k < particlesCount; k++) {
+			particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
+		}
+	}	
+	
+	// Emit particles/sparks
+	emitParticles();
+	
+	// reset flag
+	flag = 0;
+}
+
+
+
+//Function to check collision between ball and one of
+//the paddles
+function collides(b, p) {
+	if(b.x + ball.r >= p.x && b.x - ball.r <=p.x + p.w) {
+		if(b.y >= (p.y - p.h) && p.y > 0){
+			paddleHit = 1;
+			return true;
+		}
+		
+		else if(b.y <= p.h && p.y == 0) {
+			paddleHit = 2;
+			return true;
+		}
+		
+		else return false;
+	}
+}
 
 
 //Do this when collides == true
