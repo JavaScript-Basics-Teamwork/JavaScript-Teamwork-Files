@@ -304,3 +304,34 @@ function Paddle(pos) {
 paddles.push(new Paddle("bottom"));
 paddles.push(new Paddle("top")); 
 
+// Function to run when the game overs
+function gameOver() {
+	ctx.fillStlye = "white";
+	ctx.font = "20px Arial, sans-serif";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.fillText("Game Over - You scored "+points+" points!", W/2, H/2 + 25 );
+	
+	// Stop the Animation
+	cancelRequestAnimFrame(init);
+	
+	// Set the over flag
+	over = 1;
+	
+	// Show the restart button
+	//restartBtn.draw();
+}
+
+// Function for running the whole animation
+function animloop() {
+	init = requestAnimFrame(animloop);
+	draw();
+}
+
+// Function to execute at startup
+function startScreen() {
+	draw();
+	keyboardChoiceBtn.draw();
+	mouseChoiceBtn.draw();
+}
+
