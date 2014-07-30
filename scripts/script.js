@@ -99,7 +99,21 @@ function draw() {
 	ball.draw();
 	update();
 }
+// Function to increase speed after every 5 points
+function increaseSpd() {
+	if(points % 4 == 0) {
+		if(Math.abs(ball.vx) < 15) {
+			ball.vx += (ball.vx < 0) ? -1 : 1;
+			ball.vy += (ball.vy < 0) ? -2 : 2;
+		}
+	}
+}
 
+// Track the position of mouse cursor
+function trackPosition(e) {
+	mouse.x = e.pageX;
+	mouse.y = e.pageY;
+}
 // Function to update positions, score and everything.
 // Basically, the main game logic is defined here
 function update() {
