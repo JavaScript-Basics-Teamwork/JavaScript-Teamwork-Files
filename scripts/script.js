@@ -21,28 +21,26 @@ window.cancelRequestAnimFrame = ( function() {
 		clearTimeout
 } )();
 
-// Initialize canvas and required variables
 var canvas = document.getElementById("canvas"),
-		ctx = canvas.getContext("2d"), // Create canvas context --!>
-		W = window.innerWidth, // Window's width
-		H = window.innerHeight, // Window's height
-		particles = [], // Array containing particles
-		ball = {}, // Ball object
-		paddles = [2], // Array containing two paddles
-		mouse = {}, // Mouse object to store it's current position
-		points = 0, // Varialbe to store points
-		fps = 60, // Max FPS (frames per second)
-		particlesCount = 30, // Number of sparks when ball strikes the paddle
-		flag = 0, // Flag variable which is changed on collision
-		particlePos = {}, // Object to contain the position of collision 
-		multipler = 1, // Varialbe to control the direction of sparks
-		startBtn = {}, // Start button object
-		restartBtn = {}, // Restart button object
-		over = 0, // flag varialbe, cahnged when the game is over
-		init, // variable to initialize animation
+		ctx = canvas.getContext("2d"),
+		W = window.innerWidth, 
+		H = window.innerHeight, 
+		particles = [],
+		ball = {},
+		paddles = [2], 
+		mouse = {}, 
+		points = 0, 
+		fps = 60, 
+		particlesCount = 30, 
+		flag = 0, 
+		particlePos = {}, 
+		multipler = 1, 
+		startBtn = {}, 
+		restartBtn = {}, 
+		over = 0, 
+		init, 
 		paddleHit;
 		
-// Background image
 var ballColor = "white";
 var bgReady = false;
 var bgImage = new Image();
@@ -51,7 +49,6 @@ bgImage.onload = function () {
 };
 bgImage.src = "bg.jpg";
 
-// Add mousemove and mousedown events to the canvas
 canvas.addEventListener("mousemove", trackPosition, true);
 canvas.addEventListener("mousedown", btnClick, true);
 var keysDown = {};
@@ -64,35 +61,27 @@ addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
 
-// Initialise the collision sound
 collision = document.getElementById("collide");
 
-// Set the canvas's height and width to full screen
 canvas.width = W;
 canvas.height = H;
 
-// Function to paint canvas
 function paintCanvas() { 
 	 ctx.drawImage(bgImage, 0, 0, W,H);
 }
 
-// Function for creating paddles
 function Paddle(pos) {
-	// Height and width
 	this.h = 5;
 	this.w = 150;
 	
-	// Paddle's position
 	this.x = W/2 - this.w/2;
 	this.y = (pos == "top") ? 0 : H - this.h;
 	
 }
 
-// Push two new paddles into the paddles[] array
 paddles.push(new Paddle("bottom"));
 paddles.push(new Paddle("top"));
 
-// Ball object
 ball = {
 	x: 50,
 	y: 50, 
@@ -101,7 +90,6 @@ ball = {
 	vx: 4,
 	vy: 8,
 	
-	// Function for drawing ball on canvas
 	draw: function() {
 		ctx.beginPath();
 		ctx.fillStyle = this.c;
@@ -111,7 +99,6 @@ ball = {
 };
 
 
-// Start Button object
 keyboardChoiceBtn = {
 	w: 100,
 	h: 50,
@@ -150,7 +137,6 @@ mouseChoiceBtn = {
 	}
 };
 
-// Restart Button object
 restartBtn = {
 	w: 100,
 	h: 50,
@@ -170,7 +156,6 @@ restartBtn = {
 	}
 };
 
-// Function for creating particles object
 function createParticles(x, y, m) {
 	this.x = x || 0;
 	this.y = y || 0;
@@ -183,7 +168,6 @@ function createParticles(x, y, m) {
 
 }
 
-// Draw everything on canvas
 function draw() {
 	paintCanvas();
 	for(var i = 0; i < paddles.length; i++) {
@@ -198,7 +182,6 @@ function draw() {
 	update();
 }
 
-// Function to increase speed after every 5 points
 function increaseSpd() {
 	if(points % 4 == 0) {
 		if(Math.abs(ball.vx) < 15) {
@@ -208,21 +191,15 @@ function increaseSpd() {
 	}
 }
 
-// Track the position of mouse cursor
 function trackPosition(e) {
 	mouse.x = e.pageX;
 	mouse.y = e.pageY;
 }
 
-// Function to update positions, score and everything.
-// Basically, the main game logic is defined here
 function update() {
 	
-	// Update scores
 	updateScore(); 
 	
-	// Move the paddles on mouse move
-
 
 	if (mouseOrKeyboard == "mouse"){
 		if(mouse.x && mouse.y) {
@@ -233,13 +210,13 @@ function update() {
 		}
 	} else if (mouseOrKeyboard == "key") {
 		
-		if (37 in keysDown) { // Player holding left
+		if (37 in keysDown) {
 			for(var i = 1; i < paddles.length; i++) {
 				p = paddles[i];
 				p.x = p.x - 10;
 			}
 		}
-		if (39 in keysDown) { // Player holding right
+		if (39 in keysDown) {
 			for(var i = 1; i < paddles.length; i++) {
 				p = paddles[i];
 				p.x = p.x + 10;
@@ -251,20 +228,12 @@ function update() {
 
 	
 	
-	// Move the ball
 	ball.x += ball.vx;
 	ball.y += ball.vy;
 	
-	// Collision with paddles
 	p1 = paddles[1];
 	p2 = paddles[2];
 	
-	// If the ball strikes with paddles,
-	// invert the y-velocity vector of ball,
-	// increment the points, play the collision sound,
-	// save collision's position so that sparks can be
-	// emitted from that position, set the flag variable,
-	// and change the multiplier
 	if(collides(ball, p1)) {
 		collideAction(ball, p1);
 	}
@@ -275,8 +244,7 @@ function update() {
 	} 
 	
 	else {
-		// Collide with walls, If the ball hits the top/bottom,
-		// walls, run gameOver() function
+	
 		if(ball.y + ball.r > H) {
 			ball.y = H - ball.r;
 			gameOver();
@@ -287,8 +255,6 @@ function update() {
 			gameOver();
 		}
 		
-		// If ball strikes the vertical walls, invert the 
-		// x-velocity vector of ball
 		if(ball.x + ball.r > W) {
 			ball.vx = -ball.vx;
 			ball.x = W - ball.r;
@@ -302,33 +268,22 @@ function update() {
 	
 	
 	
-	// If flag is set, push the particles
 	if(flag == 1) { 
 		for(var k = 0; k < particlesCount; k++) {
 			particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
 		}
 	}	
 	
-	// Emit particles/sparks
 	emitParticles();
 	
-	// reset flag
 	flag = 0;
 }
-// Move the ball
 	ball.x += ball.vx;
 	ball.y += ball.vy;
 	
-	// Collision with paddles
 	p1 = paddles[1];
 	p2 = paddles[2];
 	
-	// If the ball strikes with paddles,
-	// invert the y-velocity vector of ball,
-	// increment the points, play the collision sound,
-	// save collision's position so that sparks can be
-	// emitted from that position, set the flag variable,
-	// and change the multiplier
 	if(collides(ball, p1)) {
 		collideAction(ball, p1);
 	}
@@ -339,8 +294,7 @@ function update() {
 	} 
 	
 	else {
-		// Collide with walls, If the ball hits the top/bottom,
-		// walls, run gameOver() function
+		
 		if(ball.y + ball.r > H) {
 			ball.y = H - ball.r;
 			gameOver();
@@ -351,8 +305,6 @@ function update() {
 			gameOver();
 		}
 		
-		// If ball strikes the vertical walls, invert the 
-		// x-velocity vector of ball
 		if(ball.x + ball.r > W) {
 			ball.vx = -ball.vx;
 			ball.x = W - ball.r;
@@ -366,24 +318,19 @@ function update() {
 	
 	
 	
-	// If flag is set, push the particles
 	if(flag == 1) { 
 		for(var k = 0; k < particlesCount; k++) {
 			particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
 		}
 	}	
 	
-	// Emit particles/sparks
 	emitParticles();
 	
-	// reset flag
 	flag = 0;
 
 
 
 
-//Function to check collision between ball and one of
-//the paddles
 function collides(b, p) {
 	if(b.x + ball.r >= p.x && b.x - ball.r <=p.x + p.w) {
 		if(b.y >= (p.y - p.h) && p.y > 0){
@@ -400,8 +347,6 @@ function collides(b, p) {
 	}
 }
 
-//Function to check collision between ball and one of
-//the paddles
 function collides(b, p) {
 	if(b.x + ball.r >= p.x && b.x - ball.r <=p.x + p.w) {
 		if(b.y >= (p.y - p.h) && p.y > 0){
@@ -418,7 +363,6 @@ function collides(b, p) {
 	}
 }
 
-//Do this when collides == true
 function collideAction(ball, p) {
 	ball.vy = -ball.vy;
 	ballColor = '#'+Math.floor(Math.random()*16777215).toString(16);
@@ -449,7 +393,6 @@ function collideAction(ball, p) {
 	flag = 1;
 }
 
-// Function for emitting particles
 function emitParticles() { 
 
 	
@@ -467,13 +410,11 @@ function emitParticles() {
 		par.x += par.vx; 
 		par.y += par.vy; 
 		
-		// Reduce radius so that the particles die after a few seconds
 		par.radius = Math.max(par.radius - 0.05, 0.0); 
 		
 	} 
 }
 
-// Function for updating score
 function updateScore() {
 	ctx.fillStlye = "white";
 	ctx.font = "16px Arial, sans-serif";
@@ -482,7 +423,6 @@ function updateScore() {
 	ctx.fillText("Score: " + points, 20, 20 );
 }
 
-// Function to run when the game overs
 function gameOver() {
 	ctx.fillStlye = "white";
 	ctx.font = "20px Arial, sans-serif";
@@ -490,34 +430,26 @@ function gameOver() {
 	ctx.textBaseline = "middle";
 	ctx.fillText("Game Over - You scored "+points+" points!", W/2, H/2 + 25 );
 	
-	// Stop the Animation
 	cancelRequestAnimFrame(init);
 	
-	// Set the over flag
 	over = 1;
 	
-	// Show the restart button
-	//restartBtn.draw();
 }
 
-// Function for running the whole animation
 function animloop() {
 
 	init = requestAnimFrame(animloop);
 	draw();
 }
 
-// Function to execute at startup
 function startScreen() {
 	draw();
 	keyboardChoiceBtn.draw();
 	mouseChoiceBtn.draw();
 }
 
-// On button click (Restart and start)
 function btnClick(e) {
 	
-	// Variables for storing mouse position on click
 	var mx = e.pageX,
 			my = e.pageY;
 
@@ -536,8 +468,7 @@ function btnClick(e) {
 	animloop();
 	
 	over = 0;
-		
-	//}
+	
 }
 
 function setControls (val) {
@@ -550,5 +481,4 @@ function setControls (val) {
 
 
 
-// Show the start screen
 startScreen();
