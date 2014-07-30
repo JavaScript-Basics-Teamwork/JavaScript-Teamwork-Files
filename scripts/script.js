@@ -335,3 +335,36 @@ function startScreen() {
 	mouseChoiceBtn.draw();
 }
 
+// On button click (Restart and start)
+function btnClick(e) {	
+	// Variables for storing mouse position on click
+	var mx = e.pageX, my = e.pageY;
+	
+	console.log(" mouse coords: " + mx + ' ' + my);
+	console.log(" mouseBtn coords: " + mouseChoiceBtn.x + ' ' + mouseChoiceBtn.y);
+	console.log(" keyboard coords: " + keyboardChoiceBtn.x + ' ' + keyboardChoiceBtn.y);
+
+	// If the game is over, and the restart button is clicked
+	
+		document.getElementById('cover').style.display = "block";
+		ball.x = 20;
+		ball.y = 20;
+		points = 0;
+		ball.vx = 2;
+		ball.vy = 4;
+		animloop();		
+		over = 0;
+		
+	//}
+}
+
+function setControls (val) {
+	mouseOrKeyboard = val;
+	animloop();
+	keyboardChoiceBtn = {};
+	mouseChoiceBtn = {};
+	document.getElementById('cover').style.display = "none";
+}
+
+// Show the start screen
+startScreen();
