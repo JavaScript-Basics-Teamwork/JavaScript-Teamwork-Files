@@ -74,7 +74,6 @@ canvas.height = H;
 // Function to paint canvas
 function paintCanvas() { 
 	 ctx.drawImage(bgImage, 0, 0, W,H);
-
 }
 
 // Function for creating paddles
