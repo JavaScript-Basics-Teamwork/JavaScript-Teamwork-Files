@@ -378,7 +378,7 @@ function update() {
 	
 	// reset flag
 	flag = 0;
-}
+
 
 
 
